@@ -1,0 +1,218 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Mannix Marasigan · Digital Card</title>
+<meta name="description" content="Finance student at UST · FINLAB PH. Tap to save my contact.">
+<meta name="theme-color" content="#070b14">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%230b1220'/%3E%3Cpath d='M9 8h14v4H13.5v3H21v4h-7.5v5H9z' fill='%2334d399'/%3E%3C/svg%3E">
+<style>
+  :root {
+    --bg: #070b14; --panel: #0d1424; --panel2: #121b2f; --line: #1c2740; --line2: #263454;
+    --ink: #e6ebf5; --dim: #8a97b3; --faint: #5a6784; --up: #34d399; --gold: #e6b84c;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+  html, body { min-height: 100%; }
+  body {
+    background: var(--bg); color: var(--ink);
+    font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    background-image:
+      linear-gradient(to right, rgba(91,157,255,.05) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(91,157,255,.05) 1px, transparent 1px);
+    background-size: 32px 32px;
+    padding: max(20px, env(safe-area-inset-top)) 16px max(28px, env(safe-area-inset-bottom));
+    display: flex; justify-content: center;
+  }
+  main { width: 100%; max-width: 420px; animation: up .35s ease-out; }
+  @keyframes up { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+  .brand { display: flex; align-items: center; gap: 8px; font-size: 11px; letter-spacing: .22em; color: var(--faint); font-weight: 600; margin-bottom: 18px; }
+  .brand i { width: 8px; height: 8px; background: var(--up); border-radius: 50%; }
+  .card { background: var(--panel); border: 1px solid var(--line); border-radius: 6px; padding: 24px 20px 20px; }
+  .avatar {
+    width: 72px; height: 72px; border-radius: 6px; border: 1px solid rgba(52,211,153,.4); background: rgba(52,211,153,.08);
+    color: var(--up); font-size: 26px; font-weight: 700; display: flex; align-items: center; justify-content: center; margin-bottom: 16px; overflow: hidden;
+  }
+  .avatar img { width: 100%; height: 100%; object-fit: cover; }
+  h1 { font-size: 26px; line-height: 1.15; letter-spacing: -.01em; }
+  .role { color: var(--gold); font-size: 14px; font-weight: 600; margin-top: 6px; }
+  .school { color: var(--dim); font-size: 13px; margin-top: 3px; }
+  .bio { color: var(--dim); font-size: 14px; line-height: 1.55; margin-top: 14px; }
+  .save {
+    width: 100%; margin-top: 20px; height: 48px; border: 0; border-radius: 4px; cursor: pointer;
+    background: var(--up); color: #04130d; font-size: 15px; font-weight: 700; font-family: inherit;
+    display: flex; align-items: center; justify-content: center; gap: 8px; transition: filter .15s, transform .1s;
+  }
+  .save:hover { filter: brightness(1.08); } .save:active { transform: scale(.985); }
+  .label { font-size: 10.5px; letter-spacing: .18em; font-weight: 700; color: var(--faint); margin: 22px 0 8px; text-transform: uppercase; }
+  .links { display: flex; flex-direction: column; gap: 8px; }
+  .link {
+    display: flex; align-items: center; gap: 12px; text-decoration: none; color: var(--ink);
+    background: var(--panel2); border: 1px solid var(--line2); border-radius: 4px; padding: 0 14px; height: 52px;
+    transition: border-color .15s, background .15s, transform .1s;
+  }
+  .link:hover { border-color: #3a4c78; background: #162139; } .link:active { transform: scale(.985); }
+  .link svg { width: 20px; height: 20px; flex: none; color: var(--up); }
+  .link .t { font-size: 14px; font-weight: 600; line-height: 1.2; }
+  .link .s { font-size: 12px; color: var(--dim); margin-top: 1px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .link .txt { min-width: 0; flex: 1; }
+  .link .go { color: var(--faint); font-size: 18px; }
+  .actions { display: flex; gap: 8px; margin-top: 14px; }
+  .ghost {
+    flex: 1; height: 42px; background: transparent; border: 1px solid var(--line2); color: var(--dim); border-radius: 4px; cursor: pointer;
+    font-family: inherit; font-size: 13px; display: flex; align-items: center; justify-content: center; gap: 6px; transition: color .15s, border-color .15s;
+  }
+  .ghost:hover { color: var(--ink); border-color: #3a4c78; }
+  .foot { text-align: center; color: var(--faint); font-size: 11.5px; margin-top: 16px; }
+  .toast { position: fixed; left: 50%; bottom: 28px; transform: translate(-50%, 20px); opacity: 0; transition: .25s; background: var(--panel2); border: 1px solid var(--line2); padding: 10px 16px; border-radius: 4px; font-size: 13px; pointer-events: none; }
+  .toast.show { opacity: 1; transform: translate(-50%, 0); }
+</style>
+</head>
+<body>
+<main>
+  <div class="brand"><i></i>DIGITAL CARD</div>
+  <section class="card">
+    <div class="avatar" id="avatar"></div>
+    <h1 id="name"></h1>
+    <div class="role" id="role"></div>
+    <div class="school" id="school"></div>
+    <p class="bio" id="bio"></p>
+
+    <button class="save" id="save">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" x2="19" y1="8" y2="14"/><line x1="22" x2="16" y1="11" y2="11"/></svg>
+      Save Contact
+    </button>
+
+    <div class="label" id="contactLabel">Contact</div>
+    <div class="links" id="contact"></div>
+
+    <div class="label" id="socialLabel">Connect</div>
+    <div class="links" id="social"></div>
+
+    <div class="actions">
+      <button class="ghost" id="share">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.6" x2="15.4" y1="13.5" y2="17.5"/><line x1="15.4" x2="8.6" y1="6.5" y2="10.5"/></svg>
+        Share
+      </button>
+      <button class="ghost" id="copy">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
+        Copy link
+      </button>
+    </div>
+  </section>
+  <div class="foot" id="foot"></div>
+</main>
+<div class="toast" id="toast"></div>
+
+<script>
+/* ============ EDIT THIS PART ONLY ============
+   Anything left empty ("") is hidden from the page and from the saved contact. */
+const CARD = {
+  firstName: "Mannix",
+  lastName: "Marasigan",
+  title: "Finance Student · Founder, FINLAB PH",
+  org: "FINLAB PH",
+  school: "University of Santo Tomas",
+  bio: "Building FINLAB PH, a flight simulator for finance. Always open to talk markets, research, and student finance.",
+  photo: "",                       // e.g. "photo.jpg" (put the image in this same folder), or leave empty for initials
+
+  email: "mannixdean.marasigan@ust.edu.ph",
+  email2: "",                      // optional second email
+  phone: "",                       // e.g. "+63 9XX XXX XXXX"
+
+  website: "",                     // e.g. "https://finlab.ph"
+  linkedin: "",                    // full link, e.g. "https://www.linkedin.com/in/yourname"
+  instagram: "",                   // full link, e.g. "https://instagram.com/yourhandle"
+  facebook: "",                    // full link
+  github: "",                      // full link
+  tiktok: "",                      // full link
+  x: "",                           // full link
+  telegram: ""                     // full link, e.g. "https://t.me/yourhandle"
+};
+/* ============================================ */
+
+const ICON = {
+  mail:'<path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/><rect width="20" height="16" x="2" y="4" rx="2"/>',
+  phone:'<path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.8 19.8 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.12 4.18 2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/>',
+  globe:'<circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/>',
+  linkedin:'<path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect width="4" height="12" x="2" y="9"/><circle cx="4" cy="4" r="2"/>',
+  instagram:'<rect width="20" height="20" x="2" y="2" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/>',
+  facebook:'<path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/>',
+  github:'<path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.4 5.4 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"/><path d="M9 18c-4.51 2-5-2-7-2"/>',
+  link:'<path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>',
+  send:'<path d="m22 2-7 20-4-9-9-4z"/><path d="M22 2 11 13"/>'
+};
+const svg = k => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">${ICON[k]}</svg>`;
+const $ = id => document.getElementById(id);
+const esc = s => s.replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const fullName = `${CARD.firstName} ${CARD.lastName}`.trim();
+
+document.title = `${fullName} · Digital Card`;
+$('name').textContent = fullName;
+$('role').textContent = CARD.title;
+$('school').textContent = CARD.school;
+$('bio').textContent = CARD.bio;
+if (!CARD.bio) $('bio').remove();
+if (CARD.photo) $('avatar').innerHTML = `<img src="${esc(CARD.photo)}" alt="${esc(fullName)}">`;
+else $('avatar').textContent = (CARD.firstName[0] || '') + (CARD.lastName[0] || '');
+
+function row(icon, title, sub, href, newTab) {
+  return `<a class="link" href="${esc(href)}"${newTab ? ' target="_blank" rel="noopener"' : ''}>${svg(icon)}<span class="txt"><div class="t">${esc(title)}</div><div class="s">${esc(sub)}</div></span><span class="go">›</span></a>`;
+}
+const clean = u => u.replace(/^https?:\/\/(www\.)?/, '').replace(/\/$/, '');
+const contact = [];
+if (CARD.phone) contact.push(row('phone', 'Call / Text', CARD.phone, 'tel:' + CARD.phone.replace(/[^\d+]/g, '')));
+if (CARD.email) contact.push(row('mail', 'Email', CARD.email, 'mailto:' + CARD.email));
+if (CARD.email2) contact.push(row('mail', 'Email', CARD.email2, 'mailto:' + CARD.email2));
+if (CARD.website) contact.push(row('globe', 'Website', clean(CARD.website), CARD.website, true));
+$('contact').innerHTML = contact.join('');
+if (!contact.length) { $('contact').remove(); $('contactLabel').remove(); }
+
+const socials = [['linkedin','LinkedIn'],['instagram','Instagram'],['facebook','Facebook'],['github','GitHub'],['tiktok','TikTok'],['x','X'],['telegram','Telegram']]
+  .filter(([k]) => CARD[k])
+  .map(([k, name]) => row(ICON[k] ? k : (k === 'telegram' ? 'send' : 'link'), name, clean(CARD[k]), CARD[k], true));
+$('social').innerHTML = socials.join('');
+if (!socials.length) { $('social').remove(); $('socialLabel').remove(); }
+$('foot').textContent = CARD.org ? `${CARD.org} · tap Save Contact to add me to your phone` : '';
+
+function toast(m) { const t = $('toast'); t.textContent = m; t.classList.add('show'); clearTimeout(t._t); t._t = setTimeout(() => t.classList.remove('show'), 2200); }
+
+/* vCard 3.0 is the most widely supported version (iOS, Android, Outlook) */
+function vcard() {
+  const e = s => s.replace(/\\/g, '\\\\').replace(/\n/g, '\\n').replace(/,/g, '\\,').replace(/;/g, '\\;');
+  const L = ['BEGIN:VCARD', 'VERSION:3.0',
+    `N:${e(CARD.lastName)};${e(CARD.firstName)};;;`, `FN:${e(fullName)}`];
+  if (CARD.org) L.push(`ORG:${e(CARD.org)}`);
+  if (CARD.title) L.push(`TITLE:${e(CARD.title)}`);
+  if (CARD.phone) L.push(`TEL;TYPE=CELL:${CARD.phone}`);
+  if (CARD.email) L.push(`EMAIL;TYPE=INTERNET:${CARD.email}`);
+  if (CARD.email2) L.push(`EMAIL;TYPE=INTERNET:${CARD.email2}`);
+  if (CARD.website) L.push(`URL:${CARD.website}`);
+  [['linkedin','LinkedIn'],['instagram','Instagram'],['facebook','Facebook'],['github','GitHub'],['tiktok','TikTok'],['x','X'],['telegram','Telegram']]
+    .forEach(([k, n]) => { if (CARD[k]) L.push(`X-SOCIALPROFILE;TYPE=${n.toLowerCase()}:${CARD[k]}`, `URL;TYPE=${n}:${CARD[k]}`); });
+  const note = [CARD.school, CARD.bio].filter(Boolean).join(' · ');
+  if (note) L.push(`NOTE:${e(note)}`);
+  L.push('END:VCARD');
+  return L.join('\r\n');
+}
+$('save').onclick = () => {
+  const blob = new Blob([vcard()], { type: 'text/vcard;charset=utf-8' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = `${CARD.firstName}-${CARD.lastName}.vcf`;
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(() => URL.revokeObjectURL(a.href), 4000);
+  toast('Opening contact…');
+};
+$('share').onclick = async () => {
+  if (navigator.share) { try { await navigator.share({ title: fullName, text: `${fullName} · ${CARD.title}`, url: location.href }); } catch (e) {} }
+  else { $('copy').click(); }
+};
+$('copy').onclick = async () => {
+  try { await navigator.clipboard.writeText(location.href); toast('Link copied'); }
+  catch (e) { toast('Copy failed. Long-press the address bar instead.'); }
+};
+</script>
+</body>
+</html>
