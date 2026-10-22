@@ -6,7 +6,8 @@
 <title>Mannix Marasigan · Digital Card</title>
 <meta name="description" content="Finance student at UST · FINLAB PH. Tap to save my contact.">
 <meta name="theme-color" content="#070b14">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%230b1220'/%3E%3Cpath d='M9 8h14v4H13.5v3H21v4h-7.5v5H9z' fill='%2334d399'/%3E%3C/svg%3E">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
 <style>
   :root {
     --bg: #070b14; --panel: #0d1424; --panel2: #121b2f; --line: #1c2740; --line2: #263454;
@@ -27,8 +28,12 @@
   }
   main { width: 100%; max-width: 420px; animation: up .35s ease-out; }
   @keyframes up { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
-  .brand { display: flex; align-items: center; gap: 8px; font-size: 11px; letter-spacing: .22em; color: var(--faint); font-weight: 600; margin-bottom: 18px; }
-  .brand i { width: 8px; height: 8px; background: var(--up); border-radius: 50%; }
+  .brand { display: flex; align-items: center; gap: 10px; margin-bottom: 18px; user-select: none; }
+  .brand img { height: 28px; width: auto; display: block; }
+  .brand .wm { display: flex; flex-direction: column; line-height: 1; font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
+  .brand .wm b { font-size: 16px; font-weight: 600; letter-spacing: .2em; color: var(--ink); }
+  .brand .wm b span { color: #f5a524; }
+  .brand .wm small { font-size: 7.5px; font-weight: 600; letter-spacing: .3em; color: var(--faint); margin-top: 4px; }
   .card { background: var(--panel); border: 1px solid var(--line); border-radius: 6px; padding: 24px 20px 20px; }
   .avatar {
     width: 72px; height: 72px; border-radius: 6px; border: 1px solid rgba(52,211,153,.4); background: rgba(52,211,153,.08);
@@ -71,7 +76,7 @@
 </head>
 <body>
 <main>
-  <div class="brand"><i></i>DIGITAL CARD</div>
+  <div class="brand" role="img" aria-label="FINLAB PH"><img src="logo.svg" alt=""><span class="wm" aria-hidden="true"><b>FIN<span>LAB</span></b><small>PHILIPPINES</small></span></div>
   <section class="card">
     <div class="avatar" id="avatar"></div>
     <h1 id="name"></h1>
