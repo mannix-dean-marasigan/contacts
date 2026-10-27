@@ -11,7 +11,7 @@
 <style>
   :root {
     --bg: #070b14; --panel: #0d1424; --panel2: #121b2f; --line: #1c2740; --line2: #263454;
-    --ink: #e6ebf5; --dim: #8a97b3; --faint: #5a6784; --up: #34d399; --gold: #e6b84c;
+    --ink: #e6ebf5; --dim: #8a97b3; --faint: #5a6784; --acc: #f5a524; --acc-ink: #1a1203; --acc-soft: rgba(245,165,36,.1); --acc-line: rgba(245,165,36,.45);
   }
   * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
   html, body { min-height: 100%; }
@@ -36,17 +36,17 @@
   .brand .wm small { font-size: 7.5px; font-weight: 600; letter-spacing: .3em; color: var(--faint); margin-top: 4px; }
   .card { background: var(--panel); border: 1px solid var(--line); border-radius: 6px; padding: 24px 20px 20px; }
   .avatar {
-    width: 72px; height: 72px; border-radius: 6px; border: 1px solid rgba(52,211,153,.4); background: rgba(52,211,153,.08);
-    color: var(--up); font-size: 26px; font-weight: 700; display: flex; align-items: center; justify-content: center; margin-bottom: 16px; overflow: hidden;
+    width: 72px; height: 72px; border-radius: 6px; border: 1px solid var(--acc-line); background: var(--acc-soft);
+    color: var(--acc); font-size: 26px; font-weight: 700; display: flex; align-items: center; justify-content: center; margin-bottom: 16px; overflow: hidden;
   }
   .avatar img { width: 100%; height: 100%; object-fit: cover; }
   h1 { font-size: 26px; line-height: 1.15; letter-spacing: -.01em; }
-  .role { color: var(--gold); font-size: 14px; font-weight: 600; margin-top: 6px; }
+  .role { color: var(--acc); font-size: 14px; font-weight: 600; margin-top: 6px; }
   .school { color: var(--dim); font-size: 13px; margin-top: 3px; }
   .bio { color: var(--dim); font-size: 14px; line-height: 1.55; margin-top: 14px; }
   .save {
     width: 100%; margin-top: 20px; height: 48px; border: 0; border-radius: 4px; cursor: pointer;
-    background: var(--up); color: #04130d; font-size: 15px; font-weight: 700; font-family: inherit;
+    background: var(--acc); color: var(--acc-ink); font-size: 15px; font-weight: 700; font-family: inherit;
     display: flex; align-items: center; justify-content: center; gap: 8px; transition: filter .15s, transform .1s;
   }
   .save:hover { filter: brightness(1.08); } .save:active { transform: scale(.985); }
@@ -57,8 +57,8 @@
     background: var(--panel2); border: 1px solid var(--line2); border-radius: 4px; padding: 0 14px; height: 52px;
     transition: border-color .15s, background .15s, transform .1s;
   }
-  .link:hover { border-color: #3a4c78; background: #162139; } .link:active { transform: scale(.985); }
-  .link svg { width: 20px; height: 20px; flex: none; color: var(--up); }
+  .link:hover { border-color: var(--acc-line); background: #162139; } .link:active { transform: scale(.985); }
+  .link svg { width: 20px; height: 20px; flex: none; color: var(--acc); }
   .link .t { font-size: 14px; font-weight: 600; line-height: 1.2; }
   .link .s { font-size: 12px; color: var(--dim); margin-top: 1px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
   .link .txt { min-width: 0; flex: 1; }
@@ -68,7 +68,7 @@
     flex: 1; height: 42px; background: transparent; border: 1px solid var(--line2); color: var(--dim); border-radius: 4px; cursor: pointer;
     font-family: inherit; font-size: 13px; display: flex; align-items: center; justify-content: center; gap: 6px; transition: color .15s, border-color .15s;
   }
-  .ghost:hover { color: var(--ink); border-color: #3a4c78; }
+  .ghost:hover { color: var(--ink); border-color: var(--acc-line); }
   .foot { text-align: center; color: var(--faint); font-size: 11.5px; margin-top: 16px; }
   .toast { position: fixed; left: 50%; bottom: 28px; transform: translate(-50%, 20px); opacity: 0; transition: .25s; background: var(--panel2); border: 1px solid var(--line2); padding: 10px 16px; border-radius: 4px; font-size: 13px; pointer-events: none; }
   .toast.show { opacity: 1; transform: translate(-50%, 0); }
