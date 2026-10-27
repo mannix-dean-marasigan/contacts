@@ -36,10 +36,10 @@
   .brand .wm small { font-size: 7.5px; font-weight: 600; letter-spacing: .3em; color: var(--faint); margin-top: 4px; }
   .card { background: var(--panel); border: 1px solid var(--line); border-radius: 6px; padding: 24px 20px 20px; }
   .avatar {
-    width: 72px; height: 72px; border-radius: 6px; border: 1px solid var(--acc-line); background: var(--acc-soft);
-    color: var(--acc); font-size: 26px; font-weight: 700; display: flex; align-items: center; justify-content: center; margin-bottom: 16px; overflow: hidden;
+    width: 128px; height: 128px; border-radius: 12px; border: 1px solid var(--acc-line); background: var(--acc-soft); box-shadow: 0 0 0 5px rgba(245,165,36,.07), 0 10px 28px rgba(0,0,0,.35);
+    color: var(--acc); font-size: 26px; font-weight: 700; display: flex; align-items: center; justify-content: center; margin-bottom: 18px; overflow: hidden;
   }
-  .avatar img { width: 100%; height: 100%; object-fit: cover; }
+  .avatar img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 28%; display: block; }
   h1 { font-size: 26px; line-height: 1.15; letter-spacing: -.01em; }
   .role { color: var(--acc); font-size: 14px; font-weight: 600; margin-top: 6px; }
   .school { color: var(--dim); font-size: 13px; margin-top: 3px; }
@@ -120,7 +120,7 @@ const CARD = {
   org: "FINLAB PH",
   school: "FINLAB PH · University of Santo Tomas",
   bio: "I'm building FINLAB PH, a finance learning platform that works like a flight simulator for finance. Students learn the concepts, practice on real cases and simulated trading, and prove what they know. Open to partnerships, mentorship, and conversations about the future of finance education.",
-  photo: "",                       // e.g. "photo.jpg" (put the image in this same folder), or leave empty for initials
+  photo: "photo.jpg",                       // e.g. "photo.jpg" (put the image in this same folder), or leave empty for initials
 
   email: "mannixdean.marasigan@ust.edu.ph",
   email2: "",                      // optional second email
@@ -157,7 +157,7 @@ $('role').textContent = CARD.title;
 $('school').textContent = CARD.school;
 $('bio').textContent = CARD.bio;
 if (!CARD.bio) $('bio').remove();
-if (CARD.photo) $('avatar').innerHTML = `<img src="${esc(CARD.photo)}" alt="${esc(fullName)}">`;
+if (CARD.photo) $('avatar').innerHTML = `<img src="${esc(CARD.photo)}" width="128" height="128" alt="${esc(fullName)}">`;
 else $('avatar').textContent = (CARD.firstName[0] || '') + (CARD.lastName[0] || '');
 
 function row(icon, title, sub, href, newTab) {
@@ -182,7 +182,7 @@ $('foot').textContent = CARD.org ? `${CARD.org} · tap Save Contact to add me to
 function toast(m) { const t = $('toast'); t.textContent = m; t.classList.add('show'); clearTimeout(t._t); t._t = setTimeout(() => t.classList.remove('show'), 2200); }
 
 /* vCard 3.0 is the most widely supported version (iOS, Android, Outlook) */
-function vcard() {
+async function vcard() {
   const e = s => s.replace(/\\/g, '\\\\').replace(/\n/g, '\\n').replace(/,/g, '\\,').replace(/;/g, '\\;');
   const L = ['BEGIN:VCARD', 'VERSION:3.0',
     `N:${e(CARD.lastName)};${e(CARD.firstName)};;;`, `FN:${e(fullName)}`];
@@ -196,11 +196,18 @@ function vcard() {
     .forEach(([k, n]) => { if (CARD[k]) L.push(`X-SOCIALPROFILE;TYPE=${n.toLowerCase()}:${CARD[k]}`, `URL;TYPE=${n}:${CARD[k]}`); });
   const note = [CARD.school, CARD.bio].filter(Boolean).join(' · ');
   if (note) L.push(`NOTE:${e(note)}`);
+  if (CARD.photo) {
+    try {
+      const blob = await (await fetch(CARD.photo)).blob();
+      const data = await new Promise((ok, no) => { const r = new FileReader(); r.onload = () => ok(String(r.result).split(',')[1]); r.onerror = no; r.readAsDataURL(blob); });
+      L.push(`PHOTO;ENCODING=b;TYPE=JPEG:${data}`);
+    } catch (e) { /* the contact still saves without the photo */ }
+  }
   L.push('END:VCARD');
   return L.join('\r\n');
 }
-$('save').onclick = () => {
-  const blob = new Blob([vcard()], { type: 'text/vcard;charset=utf-8' });
+$('save').onclick = async () => {
+  const blob = new Blob([await vcard()], { type: 'text/vcard;charset=utf-8' });
   const a = document.createElement('a');
   a.href = URL.createObjectURL(blob);
   a.download = `${CARD.firstName}-${CARD.lastName}.vcf`;
